@@ -21,7 +21,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
    - ASP.NET Core LTS + EF Core + SQLite
    - Vite + React + TypeScript
    - cookie auth for browser CRUD apps
-   - fresh seed unless a real `.bak` or production data migration is in scope
+   - fresh seed unless a real `.bak` or production data migration is in scope; for `.bak` migrations, use the `mssql-bak-to-sqlite` skill or Claude's `/vb6-migrate-data` command
 
 3. **Write a phased plan before broad edits.** Include:
    - source app inventory summary

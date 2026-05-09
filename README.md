@@ -8,6 +8,7 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
   - `/vb6-migrate` — orchestrate a full migration: inventory, architecture interview, plan, execute
   - `/vb6-inventory` — just the inventory step (forms, controls, SQL, schema inference)
   - `/vb6-translate-form <path>` — translate a single `.frm` to a React page + needed API endpoints
+  - `/vb6-migrate-data <path-to-backup.bak>` — run the SQL Server backup to SQLite data-migration workflow
 - **Subagent**: `vb6-migration-architect` — reads an inventory, asks 3-5 design questions, writes a phased plan
 - **Skills** (auto-loaded by trigger):
   - `vb6-migration-orchestrator` — Codex-visible end-to-end workflow, inventory helper, and seed migration references
