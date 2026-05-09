@@ -22,7 +22,45 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
 
 ## Install
 
+Clone the repo first:
+
+```sh
+git clone https://github.com/yianan/vb6-to-csharp.git
+cd vb6-to-csharp
+```
+
+### Codex Desktop / Codex CLI
+
+Install from a local clone:
+
+```sh
+./scripts/install-codex-local.sh
+```
+
+The script creates a local Codex marketplace wrapper at:
+
+```text
+~/.local/share/vb6-to-csharp-codex-marketplace
+```
+
+and enables:
+
+```text
+vb6-to-csharp@vb6-to-csharp-local
+```
+
+Restart Codex Desktop after running the script.
+
 ### Claude Code CLI
+
+From a local clone:
+
+```sh
+claude plugin marketplace add "$(pwd)" --scope user
+claude plugin install vb6-to-csharp@vb6-to-csharp
+```
+
+Or from GitHub:
 
 ```
 /plugin marketplace add yianan/vb6-to-csharp

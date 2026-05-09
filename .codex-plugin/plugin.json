@@ -1,0 +1,24 @@
+{
+  "name": "vb6-to-csharp",
+  "version": "0.1.0",
+  "description": "End-to-end VB6 to C# migration toolkit for inventorying VB6 projects, planning a modern architecture, and translating forms, data access, and runtime patterns.",
+  "author": {
+    "name": "Yiannis Antoniou",
+    "email": "yantoniou@gmail.com"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "VB6 to C# Migration",
+    "shortDescription": "Inventory and migrate VB6 apps to a modern C# stack.",
+    "longDescription": "A migration toolkit with commands, skills, and an architect agent for moving VB6 applications toward ASP.NET Core, EF Core, SQLite, Vite, React, and TypeScript.",
+    "developerName": "Yiannis Antoniou",
+    "category": "Coding",
+    "capabilities": ["Code", "Write"],
+    "defaultPrompt": [
+      "Inventory this VB6 project.",
+      "Plan a VB6 to C# migration.",
+      "Translate this VB6 form."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
