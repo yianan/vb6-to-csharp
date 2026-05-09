@@ -22,21 +22,23 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
 
 ## Install
 
-### Local (this machine)
+### Claude Code CLI
 
 ```
-/plugin marketplace add ~/Projects/vb6-to-csharp
+/plugin marketplace add yianan/vb6-to-csharp
 /plugin install vb6-to-csharp@vb6-to-csharp
 ```
 
-Works from both Claude Code CLI and Desktop.
+### Claude Desktop (macOS)
 
-### From git (after pushing this repo)
+`/plugin` is gated in Desktop sessions, so use Desktop's account-upload flow instead:
 
+```sh
+./scripts/build-plugin.sh             # produces vb6-to-csharp.plugin (a zip)
+open -a Claude ./vb6-to-csharp.plugin # or drag the .plugin file onto Claude.app
 ```
-/plugin marketplace add yourorg/vb6-to-csharp
-/plugin install vb6-to-csharp@vb6-to-csharp
-```
+
+Desktop uploads it to your account's plugins marketplace and syncs it back into the local cache. After that, `/vb6-migrate` is available in Desktop sessions. Re-run `build-plugin.sh` and re-open the file to push updates.
 
 ## Usage
 
