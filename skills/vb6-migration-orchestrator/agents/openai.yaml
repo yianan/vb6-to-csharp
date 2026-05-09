@@ -1,0 +1,8 @@
+interface:
+  display_name: "VB6 Migration Orchestrator"
+  short_description: "Plan and run VB6 to C# migrations"
+  brand_color: "#2563EB"
+  default_prompt: "Use $vb6-migration-orchestrator to inventory this VB6 app and plan a C# migration."
+
+policy:
+  allow_implicit_invocation: true

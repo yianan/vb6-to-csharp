@@ -10,6 +10,7 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
   - `/vb6-translate-form <path>` — translate a single `.frm` to a React page + needed API endpoints
 - **Subagent**: `vb6-migration-architect` — reads an inventory, asks 3-5 design questions, writes a phased plan
 - **Skills** (auto-loaded by trigger):
+  - `vb6-migration-orchestrator` — Codex-visible end-to-end workflow, inventory helper, and seed migration references
   - `vb6-language-mapping` — VB6 ↔ C# syntax/semantics
   - `vb6-error-handling` — `On Error Goto` / `Resume Next` / `Err` → `try`/`catch`
   - `vb6-data-types` — `Variant`, `Currency`, 1-based arrays, `Option Base`
@@ -19,6 +20,10 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
   - `dotnet-sqlite-scaffold` — exact ASP.NET Core 10 + EF Core + SQLite recipe
   - `vite-react-crud-scaffold` — exact Vite + React + TanStack Query CRUD recipe
   - `mssql-bak-to-sqlite` — restore a SQL Server `.bak` and migrate data into SQLite
+
+## Codex workflow note
+
+Claude sees the plugin's slash commands and architect agent. Codex primarily sees `skills/`, so the `vb6-migration-orchestrator` skill carries the full workflow in a Codex-loadable form and points to bundled scripts/references.
 
 ## Install
 
@@ -97,5 +102,6 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Slash commands and architect agent in place
 - ✅ Core skills (language, error handling, data types, controls, ADO, frm parser)
 - ✅ Scaffold skills (dotnet-sqlite, vite-react)
+- ✅ Codex-visible orchestration skill with a deterministic VB6 inventory helper
 - ⚠️ `mssql-bak-to-sqlite` is documentation-only — pattern is correct but not yet exercised end-to-end
 - ⚠️ No automated tests yet; verify by running `/vb6-migrate` against a fresh VB6 codebase
