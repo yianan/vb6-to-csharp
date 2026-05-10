@@ -12,6 +12,17 @@ This is the exact recipe used to build the seed library app's backend. It's know
 - **.NET 10 SDK**: `brew install dotnet` (macOS) — confirm `dotnet --version` ≥ 10.0.x. Avoid .NET 9 (EOL May 2026).
 - **dotnet-ef** matching SDK major: `dotnet tool install --global dotnet-ef --version "10.*"`. Add `~/.dotnet/tools` to PATH.
 
+### WSL2 notes
+
+For WSL2-runnable migrations, keep the target stack Linux-safe:
+
+- Good fits: ASP.NET Core, EF Core, SQLite/PostgreSQL, React/Vite, console/worker services.
+- Avoid runtime dependencies on WinForms, WPF, VB6 runtime, COM registration, OCX controls, Windows registry APIs, and Access OLEDB/ACE providers.
+- Run `dotnet --info`, `node --version`, and `npm --version` before scaffolding.
+- If system `dotnet` is broken or mixed across package sources, use a local SDK and call it by absolute path, for example `./.dotnet/dotnet build`.
+- If WSL has old Node or Node without `npm`, use a local Node runtime and prefix frontend commands with `PATH="$PWD/.node/bin:$PATH"`.
+- Installs under `/mnt/c` can be slow. Prefer the native Linux filesystem for large frontend dependency trees when practical.
+
 ### macOS Tahoe (26.x) workaround
 
 The `dotnet-ef` apphost shim refuses to start on macOS 26 because the RID lookup fails:

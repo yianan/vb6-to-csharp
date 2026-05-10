@@ -25,27 +25,39 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 
 3. **Write a phased plan before broad edits.** Include:
    - source app inventory summary
+   - startup screen and public/private entry points
    - smells to fix, especially SQL injection, plaintext passwords, globals, denormalized tables, missing transactions
+   - semantic hazards to test: `On Error`, default properties, arrays/bounds, `Collection`, `Variant`, DAO/ADO cursors, UI row indexes
    - target architecture and directory tree
    - form-to-route mapping table
+   - data import/export path for `.mdb`, `.accdb`, or `.bak` files when present
    - build sequence, phases 0-6
    - verification flows that exercise every migrated form
 
 4. **Execute in thin vertical slices.**
-   - Phase 0: verify SDKs and record environment quirks in `docs/migration-notes.md`.
+   - Phase 0: verify SDKs/runtime, decide whether WSL2-specific local `dotnet`/Node paths are needed, and record environment quirks in `docs/migration-notes.md`.
    - Phase 1: scaffold backend with `dotnet-sqlite-scaffold`.
    - Phase 2: translate schema and data access with `vb6-ado-patterns`; put multi-write business logic in services with transactions.
    - Phase 3: scaffold frontend with `vite-react-crud-scaffold`.
    - Phase 4: translate one form by hand, then reuse the pattern for the rest.
-   - Phase 5: add README, form mapping, and a smoke script.
+   - Phase 5: add README, form mapping, compatibility ledger, semantic ledger, remaining-work ledger, and a smoke script.
    - Phase 6: update plugin skills only with generalized lessons backed by the codebase.
 
-5. **Verify with a real smoke flow.** Keep the smoke script close to the app's primary workflows, not just `/health`.
+5. **Track ledgers while migrating.**
+   - Compatibility ledger: every VB6 form/procedure/control that matters, where it landed, parity status, and tests.
+   - Semantic ledger: source constructs whose behavior can silently change in C# or React.
+   - Remaining-work ledger: anything deferred, blocked, not applicable, or still unmigrated.
+
+6. **Verify with a real smoke flow.** Keep the smoke script close to the app's primary workflows, not just `/health`.
+   Include startup/public flows, login, CRUD, search/paging, modal/helper workflows, money/quantity/status changes, password confirmations, and role-gated actions when present.
 
 ## References
 
 - For a proven form-to-route reduction pattern, read `references/seed-library-form-mapping.md`.
 - For verification flow shape, read `references/seed-library-smoke-flow.md`.
+- For the required planning shape, read `references/pre-migration-design-brief.md`.
+- For compatibility/semantic/remaining-work tracking, read `references/migration-ledgers.md`.
+- For WSL2 runtime and smoke-test details, read `references/wsl2-runtime-notes.md`.
 
 ## Guardrails
 
@@ -53,3 +65,4 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 - Do not carry SQL concatenation, global mutable ADO state, plaintext auth, or denormalized lookup copies forward.
 - Do not invent requirements when a form is unclear. Mark it as an open question.
 - Prefer deterministic inventory output over freehand summaries; patch the helper when it misses a repeatable VB6 pattern.
+- Do not call the migration complete while unmapped forms, helper dialogs, menu handlers, double-click handlers, or modal confirmations remain outside the compatibility ledger.

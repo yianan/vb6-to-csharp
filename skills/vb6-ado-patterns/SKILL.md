@@ -106,6 +106,40 @@ public class Loan
 
 If the original truly needed an audit snapshot (rare — usually it was just easier to write that way in VB6), add an `audit_log` table or an `is_archived` history scheme. Don't carry forward the denormalization.
 
+## DAO and Access sources
+
+Some VB6 apps use DAO or ship Access files instead of SQL Server backups. Inventory these separately from ADO code:
+
+| VB6 / Access | C# / EF Core |
+|---|---|
+| `Database` | `DbContext` |
+| `TableDef` / `CreateField` | entity configuration and EF migration |
+| `Recordset` | `DbSet<T>` query result or tracked entity |
+| `QueryDef` with parameters | LINQ with variables or `FromSqlInterpolated` |
+| `Recordset.AddNew` / `.Edit` / `.Update` | tracked entity insert/update plus `SaveChangesAsync` |
+| `Recordset.Delete` | `Remove` plus `SaveChangesAsync` |
+| `MoveLast` solely for `RecordCount` | `CountAsync` |
+| `rs.Filter = "..."` | composed LINQ predicates or parameterized SQL |
+
+For `.mdb` files in WSL2, `mdbtools` can often inspect and export:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y mdbtools
+mdb-tables source.mdb
+mdb-schema source.mdb sqlite
+mdb-export source.mdb TableName
+```
+
+For `.accdb`, support varies. If `mdbtools` cannot read the file, record a Windows export follow-up using Access, ODBC, PowerShell, or a small Windows/.NET export utility.
+
+Rules:
+
+- Preserve table and column names initially with EF table/column mapping, then rename behind DTOs if useful.
+- Convert DAO table/schema creation code into migrations before porting UI.
+- Do not use Access OLEDB/ACE providers in WSL2 runtime code.
+- If the source creates an Access database at startup and no real data file is supplied, seed only source-defined rows and mark real data import as blocked until an export is available.
+
 ## Common gotchas
 
 - **Recordset cursors are stateful**. `rs.MoveFirst` / `rs.MoveNext` / `rs.MoveLast` patterns turn into a single `.ToListAsync()` plus normal indexing. If you find code that mutates `rs` and reads it later in the same procedure, treat the result list as immutable and rebuild as needed.
