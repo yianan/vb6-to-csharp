@@ -16,6 +16,7 @@ You have these skills available; load them as their auto-trigger conditions hit 
 - `dotnet-sqlite-scaffold` — exact ASP.NET Core 10 + EF Core + SQLite + cookie auth recipe
 - `vite-react-crud-scaffold` — exact Vite + React + TanStack Query CRUD page recipe
 - `mssql-bak-to-sqlite` — restore a SQL Server `.bak` and migrate data into SQLite
+- `vb6-parity-auditor` — final parity audit before declaring the migration complete
 
 The architect agent (`vb6-migration-architect`) will own the planning. You execute the resulting plan.
 
@@ -29,7 +30,7 @@ The architect agent (`vb6-migration-architect`) will own the planning. You execu
    - Auth model (single admin / multi-user with roles / no auth)
    - Hosting (local only / deployable / desktop wrapper)
 
-3. **Plan.** The subagent writes a project-specific plan file (mirror the structure used in the seed library-app migration: phases 0–6, target architecture diagram, schema, form-route mapping table, build sequence, verification plan). The plan goes wherever the user is invoking `/plan` — typically `~/.claude/plans/<plan-name>.md`. Call `ExitPlanMode` to surface it for approval.
+3. **Plan.** The subagent writes a project-specific plan file (mirror the structure used in the seed library-app migration: phases 0–7, target architecture diagram, schema, form-route mapping table, build sequence, verification plan, and parity audit gate). The plan goes wherever the user is invoking `/plan` — typically `~/.claude/plans/<plan-name>.md`. Call `ExitPlanMode` to surface it for approval.
 
 4. **Execute.** After approval, run phases sequentially:
    - **Phase 0**: verify SDKs (`dotnet --version` ≥ 10, `node --version` ≥ 20). Install with `brew install dotnet` if needed. Capture macOS/Windows/Linux quirks into the project's `docs/migration-notes.md`.
@@ -37,10 +38,13 @@ The architect agent (`vb6-migration-architect`) will own the planning. You execu
    - **Phase 2**: per-resource endpoints. As you translate inline-SQL queries from `.bas`/`.frm`, load `vb6-ado-patterns` and rewrite to LINQ. Wrap multi-statement business logic (issue/return-style flows) in services with explicit transactions.
    - **Phase 3**: scaffold frontend per `vite-react-crud-scaffold`. Wire auth, router, layout, reusable `<DataGrid>` and `<Dialog>` components.
    - **Phase 4**: translate forms one by one. First form is hand-written (validates the pattern); subsequent forms reuse the pattern. Use `vb6-form-controls` to map controls.
-   - **Phase 5**: README, form-mapping doc, end-to-end smoke test script.
-   - **Phase 6**: feed any new gotchas back into the relevant skill files.
+   - **Phase 5**: README, form-mapping doc, compatibility ledger, semantic ledger, remaining-work ledger, and end-to-end smoke test script.
+   - **Phase 6**: load `vb6-parity-auditor`; compare VB6 inventory/source against migrated routes, endpoints, tests, smoke flows, and ledgers. Fix blocking findings or record explicit accepted deferrals.
+   - **Phase 7**: feed any new gotchas back into the relevant skill files.
 
-5. **Skill upkeep.** Throughout execution, when you hit a VB6 quirk that's not yet documented (a strange `Option Base 1` index, an `On Error Resume Next` pattern, a default-property gotcha), add a `[skill: <skill-name>]`-tagged note to `docs/migration-notes.md` and update the skill's `SKILL.md` if the pattern is general. **Never** invent a skill from training data without a real example from the codebase you're migrating.
+5. **Completion gate.** Do not call the migration complete until the parity audit verdict is `Complete`, `Complete with accepted deferrals`, or `Blocked` with concrete external blockers.
+
+6. **Skill upkeep.** Throughout execution, when you hit a VB6 quirk that's not yet documented (a strange `Option Base 1` index, an `On Error Resume Next` pattern, a default-property gotcha), add a `[skill: <skill-name>]`-tagged note to `docs/migration-notes.md` and update the skill's `SKILL.md` if the pattern is general. **Never** invent a skill from training data without a real example from the codebase you're migrating.
 
 ## Arguments
 

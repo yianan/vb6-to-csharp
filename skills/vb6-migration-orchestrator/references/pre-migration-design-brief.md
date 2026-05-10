@@ -38,6 +38,7 @@ Create this brief after inventorying the whole VB6 project and before broad codi
    - Backend build/test pass.
    - Frontend lint/build pass.
    - Live smoke checks pass in the target runtime.
+   - `vb6-parity-auditor` has run and every blocking finding is fixed, user-deferred, blocked with a concrete reason, or not applicable.
    - Compatibility, semantic, and remaining-work ledgers are current.
 
 ## User Review

@@ -12,6 +12,7 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
 - **Subagent**: `vb6-migration-architect` — reads an inventory, asks 3-5 design questions, writes a phased plan
 - **Skills** (auto-loaded by trigger):
   - `vb6-migration-orchestrator` — Codex-visible end-to-end workflow, inventory helper, and seed migration references
+  - `vb6-parity-auditor` — final parity audit comparing VB6 inventory/source against migrated routes, endpoints, tests, smoke flows, and ledgers
   - `vb6-language-mapping` — VB6 ↔ C# syntax/semantics
   - `vb6-error-handling` — `On Error Goto` / `Resume Next` / `Err` → `try`/`catch`
   - `vb6-data-types` — `Variant`, `Currency`, 1-based arrays, `Option Base`
@@ -104,5 +105,6 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Core skills (language, error handling, data types, controls, ADO, frm parser)
 - ✅ Scaffold skills (dotnet-sqlite, vite-react)
 - ✅ Codex-visible orchestration skill with a deterministic VB6 inventory helper
+- ✅ Final parity-audit skill for missed forms, helper workflows, semantic hazards, and weak verification
 - ⚠️ `mssql-bak-to-sqlite` is documentation-only — pattern is correct but not yet exercised end-to-end
 - ⚠️ No automated tests yet; verify by running `/vb6-migrate` against a fresh VB6 codebase

@@ -41,7 +41,8 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
    - Phase 3: scaffold frontend with `vite-react-crud-scaffold`.
    - Phase 4: translate one form by hand, then reuse the pattern for the rest.
    - Phase 5: add README, form mapping, compatibility ledger, semantic ledger, remaining-work ledger, and a smoke script.
-   - Phase 6: update plugin skills only with generalized lessons backed by the codebase.
+   - Phase 6: run `vb6-parity-auditor` and close every blocking parity gap or record an explicit accepted deferral.
+   - Phase 7: update plugin skills only with generalized lessons backed by the codebase.
 
 5. **Track ledgers while migrating.**
    - Compatibility ledger: every VB6 form/procedure/control that matters, where it landed, parity status, and tests.
@@ -51,6 +52,9 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 6. **Verify with a real smoke flow.** Keep the smoke script close to the app's primary workflows, not just `/health`.
    Include startup/public flows, login, CRUD, search/paging, modal/helper workflows, money/quantity/status changes, password confirmations, and role-gated actions when present.
 
+7. **Audit parity before completion.** Use `vb6-parity-auditor` after implementation and smoke testing.
+   Do not call the migration done until the audit verdict is `Complete`, `Complete with accepted deferrals`, or `Blocked` with concrete external blockers.
+
 ## References
 
 - For a proven form-to-route reduction pattern, read `references/seed-library-form-mapping.md`.
@@ -58,6 +62,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 - For the required planning shape, read `references/pre-migration-design-brief.md`.
 - For compatibility/semantic/remaining-work tracking, read `references/migration-ledgers.md`.
 - For WSL2 runtime and smoke-test details, read `references/wsl2-runtime-notes.md`.
+- For final parity review, invoke the `vb6-parity-auditor` skill.
 
 ## Guardrails
 
