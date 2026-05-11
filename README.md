@@ -65,7 +65,7 @@ Restart Codex Desktop after running the script.
 From a local clone:
 
 ```sh
-claude plugin marketplace add "$(pwd)" --scope user
+claude plugin marketplace add ./ --scope user
 claude plugin install vb6-to-csharp@vb6-to-csharp
 ```
 
