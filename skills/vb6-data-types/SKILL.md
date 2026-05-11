@@ -123,3 +123,16 @@ The original library app uses `Variant` very lightly (mostly through `rs.Fields(
 - `IssueDate`/`DueDate`/`ReturnDate` are `DateTime` (UTC); we display as local date in the React UI via `toLocaleDateString()`.
 - The 15-day loan period is added with `DateTime.UtcNow.AddDays(15)`, not `DateAdd`.
 - Fine days are calculated with `(int)Math.Floor((asOf.Date - dueDate.Date).TotalDays)`.
+
+## Stringly-typed numerics (anti-pattern)
+
+In the seed library app, `book1.copies` and `book1.cost` are stored as **strings** in SQL Server but used arithmetically — `new_cpy = cpy - 1` works because VB's Variant coerces strings to numbers transparently. This produces several bugs:
+- `'9' < '10'` is *false* lexically — sort order is broken.
+- Concatenating with `&` looks the same as adding with `+`; one operator change silently corrupts data.
+- A `NULL` from the DB becomes `""` which becomes `0` in arithmetic but `""` in concat — non-uniform behavior.
+
+When translating, pick the right primitive type at the schema boundary even if the original was string:
+- **Counts** → `int` with a `>= 0` check.
+- **Money** → `int CostCents` (preferred for SQLite) or `decimal Cost` with `HasPrecision`.
+
+Don't be tempted to keep the column as `TEXT` "for compatibility" — there's no consumer of the legacy schema in the new app.

@@ -98,6 +98,7 @@ Pick the closest BCL exception type. Don't introduce custom exception types unle
 | Errors used as control flow ("try to open the recordset, if it fails treat as no rows") | Use a `null`-safe lookup: `await db.X.FirstOrDefaultAsync()` returns `null`, no exception. |
 | Catching every error and continuing in a transaction | Hard fail. Wrap the whole logical operation in a transaction with `using var tx = ...; await tx.CommitAsync();` and let the failure roll back. |
 | `On Error Goto handler` followed by silent log + return | Keep the catch but log via `ILogger` and rethrow or return a typed error result; don't swallow. |
+| **`MsgBox vbYesNo` confirmation with the branches inverted** (Yes runs the destructive op; No falsely reports success) | Single Cancel/Confirm modal; Confirm performs the action; Cancel does nothing and shows no message. **Do not faithfully port** the lying-Else branch — it's a bug, not behavior. Seen in the seed library app's `Book_Details.frm:537-550` and `member_details.frm` delete confirmations. |
 
 ## When the original code didn't handle errors at all
 

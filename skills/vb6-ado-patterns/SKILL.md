@@ -146,6 +146,8 @@ Rules:
 - **Recordset `.Filter` and `.Sort`** are in-memory operations on the same recordset; in EF Core you re-query with the new `Where`/`OrderBy`.
 - **CursorType / LockType / CursorLocation** parameters on `rs.Open` are mostly irrelevant — EF Core handles change tracking and concurrency for you. If the VB6 code used `adLockOptimistic` or `adLockPessimistic`, that's a hint about concurrency expectations; consider EF Core's `[ConcurrencyCheck]` attribute on hot fields like `Book.AvailableCopies`.
 - **`rs.Fields(0)`** (positional) means whatever the SQL `SELECT` listed first. After translating to LINQ + a strong type, that becomes a named property. If the original code is dependent on positions, double-check the column order in the SQL.
+- **Column names can lie.** In the seed library app, `student_book.issue_date` actually stores the *due date* (issued + 15 days); the true issue date is `date1`. Don't trust column names — always cross-reference with what `rs.Fields(n)` is read into in the UI, or with `DateAdd`/`DateDiff` math nearby. When in doubt, rename to something unambiguous (`IssuedAt`/`DueAt`) in the new schema rather than preserve the misleading name.
+- **`rs.Open SQL, ...` against INSERT/UPDATE/DELETE statements** — ADO tolerates this and discards the (empty) recordset, but the right modern idiom is `db.SaveChangesAsync()` after mutating tracked entities; never open a recordset against a mutation.
 
 ## Cycle-handling for entity serialization
 
