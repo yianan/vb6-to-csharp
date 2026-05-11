@@ -1,6 +1,6 @@
 ---
 description: Package a migrated ASP.NET Core + React app as a Tauri desktop app, including macOS builds and WSL2 Windows NSIS builds.
-argument-hint: [mac|wsl2-windows|both] [optional notes]
+argument-hint: "[mac|wsl2-windows|both] [optional notes]"
 ---
 
 Use this command after the VB6 migration has a working backend, frontend, smoke script, and parity audit.

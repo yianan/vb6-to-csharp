@@ -1,6 +1,6 @@
 ---
 description: Plan and execute a full VB6 → C#/TypeScript migration of the current project.
-argument-hint: [optional notes about the migration]
+argument-hint: "[optional notes about the migration]"
 ---
 
 You are migrating a VB6 codebase in the current working directory to a modern stack: ASP.NET Core (LTS) + EF Core + SQLite for the backend, and Vite + React + TypeScript for the frontend.
