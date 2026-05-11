@@ -20,6 +20,8 @@ Claude will:
 
 - `/vb6-inventory` — just the inventory step. Useful for sizing a migration without committing.
 - `/vb6-translate-form <path>` — translate a single `.frm` to a React page + needed API endpoints. Useful for iteratively porting an existing project.
+- `/vb6-migrate-data <path-to-backup.bak>` — restore and migrate SQL Server backup data into the migrated SQLite database.
+- `/vb6-package-desktop [mac|wsl2-windows|both]` — package a migrated ASP.NET Core + React app as a Tauri desktop app.
 
 ## What's inside
 
@@ -28,6 +30,8 @@ Claude will:
 - `vb6-migrate.md` — end-to-end orchestrator
 - `vb6-inventory.md` — inventory step
 - `vb6-translate-form.md` — single-form translation
+- `vb6-migrate-data.md` — SQL Server `.bak` to SQLite data migration workflow
+- `vb6-package-desktop.md` — Tauri desktop packaging for macOS and WSL2 Windows NSIS builds
 
 ### Subagent (`agents/`)
 
@@ -48,6 +52,7 @@ Auto-loaded as their trigger conditions hit during a migration:
 | `dotnet-sqlite-scaffold` | scaffolding the backend (Phase 1) |
 | `vite-react-crud-scaffold` | scaffolding the frontend (Phase 3) |
 | `mssql-bak-to-sqlite` | data migration when user opted in |
+| `tauri-dotnet-sidecar-packaging` | desktop packaging with an ASP.NET Core sidecar, macOS builds, and WSL2 Windows NSIS builds |
 
 ## Provenance
 
@@ -58,6 +63,7 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Slash commands and agent in place
 - ✅ Core skills written (language, error handling, data types, controls, ADO, frm parser)
 - ✅ Scaffold skills written (dotnet-sqlite, vite-react)
+- ✅ Desktop packaging skill written (Tauri + ASP.NET Core sidecar, macOS, WSL2 Windows)
 - ⚠️  `mssql-bak-to-sqlite` skill is documentation only — pattern is correct but not yet run end-to-end
 - ⚠️  No automated tests yet; verification is "run /vb6-migrate against the seed library app from a clean directory and check output"
 

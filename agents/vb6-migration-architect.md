@@ -23,7 +23,7 @@ Use **one** `AskUserQuestion` call with up to 4 multiple-choice questions. Frame
 1. **Frontend framework** — React (recommended for CRUD-heavy forms), Vue, Svelte, or vanilla TS.
 2. **Data migration** — fresh seed (recommended; fastest), migrate existing `.bak`, or schema-first now / data-later.
 3. **Auth model** — single admin matching original (recommended), multi-user with roles, or no auth (local-only).
-4. **Hosting** — local dev only (recommended), deployable, or desktop wrapper (Tauri/Electron).
+4. **Hosting** — local dev only (recommended), deployable, or desktop wrapper (Tauri preferred for this plugin's proven packaging path).
 
 If the inventory shows something special — heavy reporting via DataReport, lots of MSFlexGrid editing, COM dependencies that are genuinely load-bearing — ask one extra question about it instead of one of the above defaults.
 
@@ -36,12 +36,14 @@ Write to the plan file path the harness provided you (typically `~/.claude/plans
 - **Source app inventory** — distilled from the inventory file
 - **Smells to fix in rewrite** — every SQL injection, plaintext password, denormalization, missing transaction, etc. Be specific.
 - **Target architecture** — directory tree, normalized schema (C# entities), VB6→React form-mapping table
-- **Build sequence** — Phases 0 (env) → 1 (backend skeleton) → 2 (endpoints + tests) → 3 (frontend skeleton) → 4 (frontend pages) → 5 (polish/docs/smoke) → 6 (skill upkeep)
+- **Build sequence** — Phases 0 (env) → 1 (backend skeleton) → 2 (endpoints + tests) → 3 (frontend skeleton) → 4 (frontend pages) → 5 (polish/docs/smoke) → 6 (desktop packaging if selected) → 7 (parity audit) → 8 (skill upkeep)
 - **Critical files to create** (paths, not contents)
 - **Verification plan** — a numbered list of end-to-end flows that exercise every form's primary feature
 - **Open questions for later** — non-blocking; e.g. fine rate, soft-vs-hard delete, multi-copy borrowing rules
 
 The plan should be concise enough to scan in one read but detailed enough to execute without re-asking the user. Reference existing skills by name where they apply (e.g. "Phase 1 follows the `dotnet-sqlite-scaffold` skill"). Reference real file paths from the inventory where relevant.
+
+If the user chooses a desktop wrapper, specify the `tauri-dotnet-sidecar-packaging` skill for Phase 6 and include both macOS and WSL2 Windows NSIS build lanes unless the user explicitly narrows the target.
 
 ## End
 

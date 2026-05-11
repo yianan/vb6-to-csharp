@@ -31,7 +31,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
    - target architecture and directory tree
    - form-to-route mapping table
    - data import/export path for `.mdb`, `.accdb`, or `.bak` files when present
-   - build sequence, phases 0-6
+   - build sequence, phases 0-8
    - verification flows that exercise every migrated form
 
 4. **Execute in thin vertical slices.**
@@ -41,8 +41,9 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
    - Phase 3: scaffold frontend with `vite-react-crud-scaffold`.
    - Phase 4: translate one form by hand, then reuse the pattern for the rest.
    - Phase 5: add README, form mapping, compatibility ledger, semantic ledger, remaining-work ledger, and a smoke script.
-   - Phase 6: run `vb6-parity-auditor` and close every blocking parity gap or record an explicit accepted deferral.
-   - Phase 7: update plugin skills only with generalized lessons backed by the codebase.
+   - Phase 6: if the user chose desktop wrapper / Tauri, run `tauri-dotnet-sidecar-packaging` to add macOS packaging and WSL2 Windows NSIS build support.
+   - Phase 7: run `vb6-parity-auditor` and close every blocking parity gap or record an explicit accepted deferral.
+   - Phase 8: update plugin skills only with generalized lessons backed by the codebase.
 
 5. **Track ledgers while migrating.**
    - Compatibility ledger: every VB6 form/procedure/control that matters, where it landed, parity status, and tests.
@@ -62,6 +63,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 - For the required planning shape, read `references/pre-migration-design-brief.md`.
 - For compatibility/semantic/remaining-work tracking, read `references/migration-ledgers.md`.
 - For WSL2 runtime and smoke-test details, read `references/wsl2-runtime-notes.md`.
+- For Tauri desktop packaging with an ASP.NET Core sidecar, invoke `tauri-dotnet-sidecar-packaging`.
 - For final parity review, invoke the `vb6-parity-auditor` skill.
 
 ## Guardrails

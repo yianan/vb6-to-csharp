@@ -9,6 +9,7 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
   - `/vb6-inventory` — just the inventory step (forms, controls, SQL, schema inference)
   - `/vb6-translate-form <path>` — translate a single `.frm` to a React page + needed API endpoints
   - `/vb6-migrate-data <path-to-backup.bak>` — run the SQL Server backup to SQLite data-migration workflow
+  - `/vb6-package-desktop [mac|wsl2-windows|both]` — package a migrated ASP.NET Core + React app as a Tauri desktop app
 - **Subagent**: `vb6-migration-architect` — reads an inventory, asks 3-5 design questions, writes a phased plan
 - **Skills** (auto-loaded by trigger):
   - `vb6-migration-orchestrator` — Codex-visible end-to-end workflow, inventory helper, and seed migration references
@@ -22,6 +23,7 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
   - `dotnet-sqlite-scaffold` — exact ASP.NET Core 10 + EF Core + SQLite recipe
   - `vite-react-crud-scaffold` — exact Vite + React + TanStack Query CRUD recipe
   - `mssql-bak-to-sqlite` — restore a SQL Server `.bak` and migrate data into SQLite
+  - `tauri-dotnet-sidecar-packaging` — package the migrated app as a Tauri desktop app, including macOS and pure WSL2 Windows NSIS builds
 
 ## Codex workflow note
 
@@ -106,5 +108,6 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Scaffold skills (dotnet-sqlite, vite-react)
 - ✅ Codex-visible orchestration skill with a deterministic VB6 inventory helper
 - ✅ Final parity-audit skill for missed forms, helper workflows, semantic hazards, and weak verification
+- ✅ Tauri + ASP.NET Core sidecar packaging skill with macOS and WSL2 Windows build paths
 - ⚠️ `mssql-bak-to-sqlite` is documentation-only — pattern is correct but not yet exercised end-to-end
 - ⚠️ No automated tests yet; verify by running `/vb6-migrate` against a fresh VB6 codebase
