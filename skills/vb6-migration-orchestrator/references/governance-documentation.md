@@ -4,6 +4,8 @@ Use this reference when producing migration documentation. The documents are evi
 
 ## Required Artifacts
 
+Unless the user explicitly asks for an in-place experiment, all generated artifacts live under the separate target repo/workspace, not in the VB6 source repo. Paths below are relative to the target repo.
+
 1. `docs/vb6-inventory.json`
    - Machine-readable inventory of projects, forms, modules, controls, SQL references, data files, resources, binary dependencies, risks, and smells.
 
@@ -57,6 +59,7 @@ Every migration plan must include these tables:
 
 Before implementation, first present the review packet in-chat or open the generated Markdown files for the user. The review packet must include the decision-critical contents, not just links:
 
+- absolute source repo path and target repo path
 - absolute paths to the source brief and governance brief
 - source application summary
 - old-system Mermaid diagram(s)

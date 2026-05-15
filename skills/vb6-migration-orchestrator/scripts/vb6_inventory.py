@@ -346,7 +346,7 @@ def write_source_application_brief(data: dict, path: Path) -> None:
         "",
         "## Target Mapping Placeholders",
         "",
-        "Complete these in `docs/migration-governance-brief.md` before implementation:",
+        "Complete these in the target repo's `docs/migration-governance-brief.md` before implementation:",
         "",
         "- Source form to target route/page/dialog/service.",
         "- Source module/procedure to target endpoint/service/component/test.",
@@ -356,7 +356,7 @@ def write_source_application_brief(data: dict, path: Path) -> None:
         "",
         "## Review Gate",
         "",
-        "Before migration implementation begins, the user must confirm they have read this source brief and the migration governance brief.",
+        "Before migration implementation begins, present this source brief and the migration governance brief in-chat or open them for review. Record user questions, corrections, and explicit approval before writing implementation code.",
     ])
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

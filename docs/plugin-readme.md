@@ -4,17 +4,20 @@ End-to-end VB6 → C# (ASP.NET Core) + TypeScript (Vite + React) migration toolk
 
 ## Quick start
 
-In any directory containing a VB6 project (`.vbp`, `.frm`, `.bas`):
+From, or pointing at, any directory containing a VB6 project (`.vbp`, `.frm`, `.bas`):
 
 ```
 /vb6-migrate
 ```
 
 Claude will:
-1. Inventory the VB6 source (`docs/vb6-inventory.{json,md}`).
-2. Ask 3-5 architecture questions via the `vb6-migration-architect` subagent.
-3. Write a phased plan file.
-4. After your approval, scaffold backend + frontend and translate forms one by one.
+1. Treat the VB6 checkout as read-only source input.
+2. Propose a separate target repo such as `<source-folder>-csharp` or `<source-folder>-migration`, and let you edit the defaults.
+3. Inventory the VB6 source into `<target-repo>/docs/vb6-inventory.{json,md}`.
+4. Present the source/governance review packet in chat or open the generated docs.
+5. Ask 3-5 architecture questions via the `vb6-migration-architect` subagent.
+6. Write a phased plan file.
+7. After your approval, scaffold backend + frontend and translate forms one by one in the target repo.
 
 ## Smaller commands
 

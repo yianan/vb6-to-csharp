@@ -1,8 +1,10 @@
 # Pre-Migration Design Brief
 
-Create `docs/migration-governance-brief.md` after inventorying the whole VB6 project and before broad coding, unless the user has already approved an equivalent plan. It must be written for human review, not just for agent execution. The goal is to make the migration auditable, governed, reliable, and repeatable.
+Create `docs/migration-governance-brief.md` in the target migration repo after inventorying the whole VB6 source project and before broad coding, unless the user has already approved an equivalent plan. It must be written for human review, not just for agent execution. The goal is to make the migration auditable, governed, reliable, and repeatable.
 
-Also create or update `docs/source-application-brief.md`. The inventory helper writes a first draft; correct it manually when the source contains dynamic behavior the helper cannot infer.
+Also create or update `docs/source-application-brief.md` in the target repo. The inventory helper writes a first draft; correct it manually when the source contains dynamic behavior the helper cannot infer.
+
+Keep the VB6 source repo and generated target repo separate by default. The source repo is evidence and input; the target repo is where docs, implementation, tests, ledgers, and scripts are written.
 
 ## Review Gate
 
@@ -11,11 +13,13 @@ Before implementation begins, show the user both:
 - `docs/source-application-brief.md`
 - `docs/migration-governance-brief.md`
 
+Also show the absolute source repo path and target repo path.
+
 Then ask explicitly:
 
-> I have prepared the source application brief and migration governance brief. Have you read them and do you approve proceeding with implementation?
+> I have prepared the source application brief and migration governance brief in the proposed target repo. Have you reviewed them, what questions or corrections do you have, and do you approve proceeding with implementation?
 
-Do not start Phase 1 implementation until the user confirms. If the user has not read them, summarize the key decisions and ask them to review the files. Record the approval in `docs/migration-notes.md` or the governance brief with date, approver, and scope.
+Do not start Phase 1 implementation until the user confirms. If the user has not read them, summarize the key decisions in-chat or open the files for them. Record the approval in `docs/migration-notes.md` or the governance brief with date, approver, target repo, and scope.
 
 ## Required Sections
 
@@ -33,7 +37,7 @@ Do not start Phase 1 implementation until the user confirms. If the user has not
    - New-system diagram in Mermaid showing React routes/components, API endpoints, services, EF Core entities, database, import scripts, auth, and packaging/deployment lane when selected.
 
 3. Architecture
-   - .NET projects, React project, database target, and runtime assumptions.
+   - Target repo path, .NET projects, React project, database target, and runtime assumptions.
    - API endpoints grouped by workflow.
    - Domain/application services and where business rules live.
    - Source-to-target architecture mapping table:

@@ -9,30 +9,35 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 
 ## Workflow
 
-0. **Start from a clean migration run.** Before inventory or implementation, inspect the VB6 project root for prior generated migration artifacts:
-   - `backend/`
-   - `frontend/`
-   - `src-tauri/`
-   - generated `docs/` files from a previous migration run
-   - smoke scripts, ledgers, and generated README material
+0. **Separate source from output.** Treat the VB6 checkout as read-only source input. Do not write generated migration artifacts into the VB6 source repo unless the user explicitly asks for an in-place experiment.
 
-   If the user asks to "start fresh", "redo end to end", "start from scratch", or similar, do not layer a few updates over the previous output. Ask whether to archive or delete prior generated migration artifacts. Prefer archiving to a timestamped folder such as `.migration-runs/<timestamp>/` unless the user explicitly asks to delete. Preserve original VB6 source files and hand-authored user files. After the reset/archive decision, record what was moved or kept in `docs/migration-notes.md` once docs are recreated.
+   Propose a separate migration workspace/repo before inventory or implementation. Sensible default:
+   - Source repo: the directory containing the VB6 `.vbp` / `.frm` files.
+   - Target repo: a sibling directory named `<source-folder>-csharp` or `<source-folder>-migration`.
+   - Generated docs: `<target-repo>/docs/`
+   - Generated backend: `<target-repo>/backend/`
+   - Generated frontend: `<target-repo>/frontend/`
+   - Generated scripts: `<target-repo>/scripts/`
 
-1. **Inventory first.** Run the bundled inventory helper from the VB6 project root. Resolve the script path relative to this `SKILL.md` file:
+   Present these paths to the user and allow edits before proceeding. If the target path already exists, ask whether to reuse it or choose another target path. Do not suggest cleaning, archiving, or deleting files from the VB6 source repo as the normal fresh-start path.
+
+1. **Inventory first.** Run the bundled inventory helper against the VB6 source repo, writing output into the target repo's docs directory. Resolve the script path relative to this `SKILL.md` file:
 
    ```sh
-   python3 <skill-dir>/scripts/vb6_inventory.py . --out docs
+   mkdir -p <target-repo>/docs
+   python3 <skill-dir>/scripts/vb6_inventory.py <source-repo> --out <target-repo>/docs
    ```
 
-   It writes `docs/vb6-inventory.json`, `docs/vb6-inventory.md`, and `docs/source-application-brief.md`. Read all three before proposing architecture.
+   It writes `<target-repo>/docs/vb6-inventory.json`, `<target-repo>/docs/vb6-inventory.md`, and `<target-repo>/docs/source-application-brief.md`. Read all three before proposing architecture.
 
-2. **Create governed documentation before implementation.** Read `references/governance-documentation.md` and `references/pre-migration-design-brief.md`, then write `docs/migration-governance-brief.md`.
+2. **Create governed documentation before implementation.** Read `references/governance-documentation.md` and `references/pre-migration-design-brief.md`, then write `<target-repo>/docs/migration-governance-brief.md`.
    It must document the existing application, old-system diagrams, new-system diagrams, and source-to-target mappings for screens, code modules, data assets, dependencies, workflows, tests, and accepted deferrals.
 
 3. **Present the documents before asking for approval.** Do not merely say that docs were written. The user should not have to go hunting through files before the gate.
 
    Provide an in-chat review packet with:
-   - the absolute paths of `docs/source-application-brief.md` and `docs/migration-governance-brief.md`
+   - the absolute source repo path and target repo path
+   - the absolute paths of `<target-repo>/docs/source-application-brief.md` and `<target-repo>/docs/migration-governance-brief.md`
    - a concise but complete source-application brief summary
    - old-system Mermaid diagram(s)
    - proposed new-system Mermaid diagram(s)
@@ -48,7 +53,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 
    "Have you reviewed the source application brief and migration governance brief? What questions or corrections do you have, and do you approve proceeding with implementation?"
 
-   Treat questions or corrections as a stop signal: revise the docs and present the changed sections before asking again. Do not begin Phase 1 implementation until the user explicitly approves. Record the approval in the governance brief or `docs/migration-notes.md`.
+   Treat questions or corrections as a stop signal: revise the docs and present the changed sections before asking again. Do not begin Phase 1 implementation until the user explicitly approves. Record the approval in the governance brief or `<target-repo>/docs/migration-notes.md`.
 
 5. **Ask only architecture questions that matter.** Default to the proven demo stack unless the user has a reason to vary it:
    - ASP.NET Core LTS + EF Core + SQLite
@@ -61,7 +66,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
    - startup screen and public/private entry points
    - smells to fix, especially SQL injection, plaintext passwords, globals, denormalized tables, missing transactions
    - semantic hazards to test: `On Error`, default properties, arrays/bounds, `Collection`, `Variant`, DAO/ADO cursors, UI row indexes
-   - target architecture and directory tree
+   - target architecture and target repo directory tree
    - old-system and new-system Mermaid diagrams
    - form-to-route mapping table
    - code-module-to-service/component mapping table
@@ -72,7 +77,7 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
    - verification flows that exercise every migrated form
 
 7. **Execute in thin vertical slices.**
-   - Phase 0: verify SDKs/runtime, decide whether WSL2-specific local `dotnet`/Node paths are needed, and record environment quirks in `docs/migration-notes.md`.
+   - Phase 0: initialize the target repo if needed, verify SDKs/runtime, decide whether WSL2-specific local `dotnet`/Node paths are needed, and record environment quirks in `<target-repo>/docs/migration-notes.md`.
    - Phase 1: scaffold backend with `dotnet-sqlite-scaffold`.
    - Phase 2: translate schema and data access with `vb6-ado-patterns`; put multi-write business logic in services with transactions.
    - Phase 3: scaffold frontend with `vite-react-crud-scaffold`.
@@ -107,10 +112,11 @@ Use this skill as the Codex-visible equivalent of the plugin's Claude slash comm
 ## Guardrails
 
 - Treat migration as a rewrite with preserved behavior, not a line-by-line port.
+- Keep legacy VB6 source and generated target implementation in separate repositories/directories by default.
 - Do not carry SQL concatenation, global mutable ADO state, plaintext auth, or denormalized lookup copies forward.
 - Do not invent requirements when a form is unclear. Mark it as an open question.
 - Prefer deterministic inventory output over freehand summaries; patch the helper when it misses a repeatable VB6 pattern.
 - Do not skip the source/governance document review gate, even for demos.
 - Do not ask the user whether they have read generated docs until you have presented the review packet in-chat or opened the files for them.
-- Do not treat a rerun as fresh when prior generated backend/frontend/docs artifacts are still being reused silently.
+- Do not clean, archive, or delete the source repo as the default way to get a fresh run. Use a new target repo/path instead.
 - Do not call the migration complete while unmapped forms, helper dialogs, menu handlers, double-click handlers, or modal confirmations remain outside the compatibility ledger.

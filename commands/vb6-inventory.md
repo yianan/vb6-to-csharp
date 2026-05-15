@@ -1,8 +1,16 @@
 ---
-description: Inventory the VB6 project in the current directory; produce docs/vb6-inventory.{json,md} and docs/source-application-brief.md.
+description: Inventory a VB6 source project; produce vb6-inventory.{json,md} and source-application-brief.md under the selected target repo docs directory.
 ---
 
-Scan the current working directory for VB6 source files and produce a structured inventory.
+Scan the VB6 source directory for VB6 source files and produce a structured inventory. For the full migration workflow, write inventory output into the separate target repo's `docs/` directory, not into the VB6 source repo.
+
+If no source/target paths are provided, default to:
+
+- Source repo: current working directory if it contains the VB6 `.vbp` / `.frm` files.
+- Target repo: sibling directory named `<source-folder>-csharp` or `<source-folder>-migration`.
+- Inventory output: `<target-repo>/docs/`.
+
+Show these defaults to the user before writing if the command is part of a governed migration flow.
 
 ## Files to look for
 
@@ -32,7 +40,7 @@ From the SQL queries across all forms, build a tables-and-columns inventory. Not
 
 ## Output
 
-`docs/vb6-inventory.json`:
+`<target-repo>/docs/vb6-inventory.json`:
 ```json
 {
   "project": { "name": "...", "startup_form": "...", "references": [...], "ocx_objects": [...] },
@@ -44,9 +52,9 @@ From the SQL queries across all forms, build a tables-and-columns inventory. Not
 }
 ```
 
-`docs/vb6-inventory.md` — human-readable version of the same content with markdown tables and short prose.
+`<target-repo>/docs/vb6-inventory.md` — human-readable version of the same content with markdown tables and short prose.
 
-`docs/source-application-brief.md` — reviewable source-application documentation with:
+`<target-repo>/docs/source-application-brief.md` — reviewable source-application documentation with:
 
 - existing system Mermaid diagrams
 - screen/form inventory

@@ -90,15 +90,17 @@ Desktop uploads it to your account's plugins marketplace and syncs it back into 
 
 ## Usage
 
-In any directory containing a VB6 project (`.vbp`, `.frm`, `.bas`):
+From, or pointing at, any directory containing a VB6 project (`.vbp`, `.frm`, `.bas`):
 
 ```
 /vb6-migrate
 ```
 
-The plugin inventories the source, asks architecture questions, writes a plan, and executes it phase by phase.
+The plugin treats the VB6 checkout as read-only source input. It proposes a separate sibling target repo such as `<source-folder>-csharp` or `<source-folder>-migration`, lets the user edit those defaults, then writes generated docs, backend, frontend, scripts, ledgers, and tests into that target repo.
 
-The migration workflow now creates reviewable governance artifacts before implementation: `docs/source-application-brief.md`, `docs/migration-governance-brief.md`, compatibility/semantic/remaining-work ledgers, Mermaid diagrams for old/new systems, and source-to-target mapping tables. The user must confirm they have read the briefs before execution proceeds.
+The plugin inventories the source, asks architecture questions, writes a plan, and executes it phase by phase in the target repo.
+
+The migration workflow now creates reviewable governance artifacts before implementation in the target repo: `docs/source-application-brief.md`, `docs/migration-governance-brief.md`, compatibility/semantic/remaining-work ledgers, Mermaid diagrams for old/new systems, and source-to-target mapping tables. The agent must present the decision-critical content in chat or open the docs for the user, then wait for approval before execution proceeds.
 
 ## Provenance
 
@@ -113,4 +115,4 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Final parity-audit skill for missed forms, helper workflows, semantic hazards, and weak verification
 - ✅ Tauri + ASP.NET Core sidecar packaging skill with macOS and WSL2 Windows build paths
 - ⚠️ `mssql-bak-to-sqlite` is documentation-only — pattern is correct but not yet exercised end-to-end
-- ⚠️ No automated tests yet; verify by running `/vb6-migrate` against a fresh VB6 codebase
+- ⚠️ No automated tests yet; verify by running `/vb6-migrate` against a clean clone of a VB6 source repo and a separate target repo
