@@ -23,6 +23,10 @@ The architect agent (`vb6-migration-architect`) will own the planning. You execu
 
 ## Workflow
 
+0. **Fresh-run decision.** Before inventory or implementation, inspect the current working directory for prior generated migration artifacts: `backend/`, `frontend/`, `src-tauri/`, generated `docs/` files, smoke scripts, ledgers, and generated README material.
+
+   If the user asks to "start fresh", "redo end to end", "start from scratch", or similar, do not layer a few edits over the previous output. Ask whether to archive or delete prior generated migration artifacts. Prefer archiving to `.migration-runs/<timestamp>/` unless the user explicitly asks to delete. Preserve original VB6 source and user-authored files.
+
 1. **Inventory.** First run `/vb6-inventory` (or call its logic inline): scan `*.frm`, `*.bas`, `*.cls`, `*.ctl`, `*.vbp`, `*.vbg`, data files, resources, and COM/OCX references. For each form, record purpose, control list, event handlers, and any inline SQL queries. Infer the database schema from those queries. Save the result to `docs/vb6-inventory.json`, `docs/vb6-inventory.md`, and `docs/source-application-brief.md`.
 
 2. **Governance documentation.** Before implementation, create `docs/migration-governance-brief.md` using the orchestrator references. It must include:
@@ -35,7 +39,20 @@ The architect agent (`vb6-migration-architect`) will own the planning. You execu
    - semantic hazards and verification plan
    - review gates, ledgers, audit criteria, and repeatability evidence
 
-3. **User review gate.** Show the user `docs/source-application-brief.md` and `docs/migration-governance-brief.md`, then ask: "Have you read these documents and do you approve proceeding with implementation?" Do not proceed to implementation until they explicitly confirm. Record the approval decision.
+3. **User review gate.** Do not merely write docs and ask the user to go find them. Present an in-chat review packet before asking for approval:
+   - absolute paths to `docs/source-application-brief.md` and `docs/migration-governance-brief.md`
+   - source-application summary
+   - old-system Mermaid diagram(s)
+   - new-system Mermaid diagram(s)
+   - screen/form mapping table
+   - code module/procedure mapping table
+   - database/file/query mapping table
+   - dependency/risk mapping table
+   - open questions and assumptions
+
+   If local file opening is available, offer to open the generated Markdown files in the user's editor or preview app, and do so when asked. If the docs are too long for one response, include the decision-critical sections in-chat and state where the full details are stored.
+
+   Then ask: "Have you reviewed the source application brief and migration governance brief? What questions or corrections do you have, and do you approve proceeding with implementation?" Treat questions or corrections as a stop signal: revise the docs, present the changed sections, and ask again. Do not proceed to implementation until they explicitly confirm. Record the approval decision.
 
 4. **Architecture interview.** Launch the `vb6-migration-architect` subagent with the inventory and governance brief as input. The subagent uses `AskUserQuestion` to decide:
    - Frontend framework (React / Vue / Svelte / vanilla TS)

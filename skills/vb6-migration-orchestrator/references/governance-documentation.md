@@ -55,11 +55,23 @@ Every migration plan must include these tables:
 
 ## Review Gate Wording
 
-Before implementation, ask:
+Before implementation, first present the review packet in-chat or open the generated Markdown files for the user. The review packet must include the decision-critical contents, not just links:
 
-> I have prepared the source application brief and migration governance brief. Have you read them and do you approve proceeding with implementation?
+- absolute paths to the source brief and governance brief
+- source application summary
+- old-system Mermaid diagram(s)
+- new-system Mermaid diagram(s)
+- screen/form mapping table
+- code module/procedure mapping table
+- database/file/query mapping table
+- dependency/risk mapping table
+- open questions and assumptions
 
-If the answer is not an explicit yes, do not begin broad implementation. Clarify questions, revise the documents, and ask again.
+Then ask:
+
+> Have you reviewed the source application brief and migration governance brief? What questions or corrections do you have, and do you approve proceeding with implementation?
+
+If the answer is not an explicit yes, do not begin broad implementation. Clarify questions, revise the documents, present the changed sections, and ask again.
 
 Record the approval in the governance brief:
 
