@@ -15,9 +15,14 @@ Prefer these files when present:
 - `docs/vb6-inventory.md`
 - `docs/form-mapping.md`
 - `docs/migration-notes.md`
+- `docs/migration-options.md`
+- `docs/decision-log.md`
 - `docs/compatibility-ledger.md`
 - `docs/semantic-ledger.md`
 - `docs/remaining-work-ledger.md`
+- `docs/test-plan.md`
+- `docs/test-results.md`
+- `docs/slice-reports.md`
 - `scripts/smoke.sh` or equivalent smoke workflow
 - backend route/endpoint/controller files
 - frontend route/page/layout files
@@ -44,6 +49,7 @@ Then inspect the original VB6 source directly for anything the inventory may hav
    - Data import/seed paths.
    - Tests and smoke-script steps.
    - Ledgers and documented deferrals.
+   - Slice reports and test evidence.
 
 3. Match every source item to one target outcome:
    - migrated
@@ -62,6 +68,12 @@ Then inspect the original VB6 source directly for anything the inventory may hav
    - The smoke script should exercise real workflows, not only health checks.
    - It should cover startup/public flow, login, CRUD, search/paging, modal/helper workflows, money/quantity/status mutation, role-gated actions, and password/account changes when present.
    - Tests should cover extracted business rules and semantic hazards that are easy to regress.
+
+6. Check process evidence.
+   - `docs/decision-log.md` should show user approvals for source/target, inventory, migration options, governance plan, implementation, final build, and closeout when those gates have been reached.
+   - `docs/slice-reports.md` should show parity ledger updates and tests per slice.
+   - `docs/test-results.md` should record actual commands and pass/fail summaries.
+   - Final build approval must not exist before tests pass and parity is complete, complete with accepted deferrals, or blocked with concrete external blockers.
 
 ## Report Shape
 
@@ -89,10 +101,13 @@ Write or return a concise parity audit report with these sections:
 5. Missing or weak verification
    - Tests/smoke steps to add before completion.
 
-6. Accepted deferrals and blockers
+6. Process evidence gaps
+   - Missing approvals, missing slice reports, missing test-result entries, or ledgers not updated per slice.
+
+7. Accepted deferrals and blockers
    - Include owner/next action where known.
 
-7. Completion recommendation
+8. Completion recommendation
    - What must happen before the migration can honestly be called done.
 
 ## Severity Guide
@@ -107,5 +122,7 @@ Write or return a concise parity audit report with these sections:
 - Do not treat a passing build as parity.
 - Do not treat a single CRUD route as covering every VB6 form that touched that table. Confirm buttons, menu actions, modal flows, double-click actions, and helper dialogs.
 - Do not mark a source item complete unless it has target behavior plus verification, or an explicit accepted deferral.
+- Do not accept stale ledgers that were updated only at the end when slice evidence should exist.
+- Do not recommend final build approval unless tests and parity evidence are recorded.
 - Do not silently accept frontend-only authorization for sensitive actions; backend/API behavior must enforce it.
 - Do not assume the inventory is complete. Sweep the VB6 source before final judgment.

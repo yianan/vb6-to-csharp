@@ -25,11 +25,23 @@ Unless the user explicitly asks for an in-place experiment, all generated artifa
    - `docs/semantic-ledger.md`
    - `docs/remaining-work-ledger.md`
 
-6. Verification evidence:
+6. Decision and option artifacts:
+   - `docs/migration-options.md`
+   - `docs/decision-log.md`
+
+7. Verification evidence:
+   - `docs/test-plan.md`
+   - `docs/test-results.md`
+   - `docs/slice-reports.md`
    - build/test commands and results
    - smoke script
    - data import logs/counts when applicable
    - parity audit report
+
+8. Final build and closeout:
+   - `docs/final-build-report.md`
+   - `docs/migration-closeout.md`
+   - updated `README.md`
 
 ## Source-To-Target Mapping Requirements
 
@@ -69,6 +81,8 @@ Before implementation, first present the review packet in-chat or open the gener
 - database/file/query mapping table
 - dependency/risk mapping table
 - open questions and assumptions
+- selected migration options
+- test plan and parity plan
 
 Then ask:
 
@@ -81,10 +95,17 @@ Record the approval in the governance brief:
 | Review item | Reviewer | Decision | Date | Notes |
 |---|---|---|---|---|
 
+Also record approvals, corrections, changes, deferrals, final build approval, and final acceptance in `docs/decision-log.md`:
+
+| Time | Gate | Decision | Options presented | User selection | Impact | Notes |
+|---|---|---|---|---|---|---|
+
 ## Evidence Standards
 
 - A passing build is not evidence of parity.
 - A CRUD route is not evidence that every form touching that table was migrated.
 - A target screen is not complete until it maps to legacy behavior and has verification.
+- A completed slice is not complete until tests have been run or explicitly deferred, and parity ledgers are updated.
 - A deferral is acceptable only when explicitly recorded with owner/next action or user acceptance.
 - Dynamic or unclear VB6 behavior must be characterized by a test, smoke step, manual note, or accepted risk.
+- A final build is not the final deliverable until closeout docs are updated and the user accepts the handoff packet.

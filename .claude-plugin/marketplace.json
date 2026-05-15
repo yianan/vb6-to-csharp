@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "vb6-to-csharp",
-  "version": "0.1.8",
-  "description": "End-to-end VB6 → C# (ASP.NET Core) + TypeScript (Vite + React) migration toolkit. Slash commands, an architect subagent, and skills covering language, error handling, data types, controls, ADO patterns, .frm parsing, and modern-stack scaffolding.",
+  "version": "0.1.9",
+  "description": "Governed VB6 → C# (ASP.NET Core) + TypeScript (Vite + React) migration toolkit. Slash commands, an architect subagent, and skills covering source inventory, user choices, approval gates, tests, parity ledgers, final builds, and closeout.",
   "owner": {
     "name": "Yiannis Antoniou",
     "email": "yantoniou@gmail.com"
@@ -10,8 +10,8 @@
   "plugins": [
     {
       "name": "vb6-to-csharp",
-      "description": "Inventory a VB6 codebase and migrate it to ASP.NET Core + Vite + React.",
-      "version": "0.1.8",
+      "description": "Inventory a VB6 codebase and migrate it through governed approval gates to ASP.NET Core + Vite + React.",
+      "version": "0.1.9",
       "source": "./",
       "category": "migration"
     }

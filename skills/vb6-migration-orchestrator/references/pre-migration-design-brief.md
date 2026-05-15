@@ -8,16 +8,18 @@ Keep the VB6 source repo and generated target repo separate by default. The sour
 
 ## Review Gate
 
-Before implementation begins, show the user both:
+Before implementation begins, follow the gate sequence in `migration-decision-workflow.md`. At minimum, show the user:
 
 - `docs/source-application-brief.md`
+- `docs/migration-options.md`
 - `docs/migration-governance-brief.md`
+- `docs/test-plan.md`
 
 Also show the absolute source repo path and target repo path.
 
 Then ask explicitly:
 
-> I have prepared the source application brief and migration governance brief in the proposed target repo. Have you reviewed them, what questions or corrections do you have, and do you approve proceeding with implementation?
+> I have prepared the source application brief, migration options, governance brief, and test plan in the proposed target repo. Have you reviewed them, what questions or corrections do you have, and do you approve proceeding to implementation planning?
 
 Do not start Phase 1 implementation until the user confirms. If the user has not read them, summarize the key decisions in-chat or open the files for them. Record the approval in `docs/migration-notes.md` or the governance brief with date, approver, target repo, and scope.
 
@@ -36,7 +38,12 @@ Do not start Phase 1 implementation until the user confirms. If the user has not
    - Which workflows intentionally change for web ergonomics.
    - New-system diagram in Mermaid showing React routes/components, API endpoints, services, EF Core entities, database, import scripts, auth, and packaging/deployment lane when selected.
 
-3. Architecture
+3. Migration choices
+   - Selected backend, frontend, database, data strategy, auth, UI strategy, hosting, packaging, backend tests, frontend tests, parity tracking, and build gate.
+   - Rationale, rejected alternatives, risks, and output impact.
+   - Link to `docs/migration-options.md` and decision-log rows.
+
+4. Architecture
    - Target repo path, .NET projects, React project, database target, and runtime assumptions.
    - API endpoints grouped by workflow.
    - Domain/application services and where business rules live.
@@ -45,7 +52,7 @@ Do not start Phase 1 implementation until the user confirms. If the user has not
      | Legacy layer/item | Target layer/item | Rationale | Verification |
      |---|---|---|---|
 
-4. Data plan
+5. Data plan
    - Schema mapping from Access/DAO/ADO/SQL Server to EF Core.
    - Seed data.
    - Import/export plan for existing `.mdb`, `.accdb`, or `.bak` data, or why import is not applicable.
@@ -54,27 +61,40 @@ Do not start Phase 1 implementation until the user confirms. If the user has not
      | Source table/query/file | Source columns/meaning | Target entity/table | Transform/import rule | Verification |
      |---|---|---|---|---|
 
-5. Semantic hazard plan
+6. Semantic hazard plan
    - `On Error`, `Resume Next`, default properties, `Collection`, arrays/bounds, date/currency/null handling, global state, and UI index lookups.
    - Specific tests or characterization checks for risky behavior.
 
-6. Slice plan
+7. Test and evidence plan
+   - Backend test approach.
+   - Frontend test approach.
+   - Smoke-test coverage.
+   - Data import/seed validation.
+   - Semantic hazard tests.
+   - Commands to record in `docs/test-results.md`.
+
+8. Slice plan
    - Ordered workflow slices from smallest runnable slice to full parity.
    - For each slice: source files/procedures, target components, tests, and smoke checks.
+   - For each slice: ledgers and slice report updates required before moving on.
 
-7. Governance controls
+9. Governance controls
    - Required review gates: source brief approval, governance brief approval, slice completion, parity audit, accepted deferrals.
    - Evidence artifacts: inventory JSON/MD, source brief, governance brief, ledgers, smoke logs, build/test results, parity audit report.
    - Change-control rule: every unmigrated, redesigned, or deferred legacy behavior needs an explicit ledger row.
    - Repeatability rule: commands/scripts used for inventory, build, data import, smoke testing, and packaging must be recorded in docs or scripts.
+   - User-steering rule: user changes are change requests; update impacted docs/tests/ledgers and ask for renewed approval when scope, stack, tests, packaging, parity, or build output changes.
 
-8. Completion criteria
+10. Completion criteria
    - All forms/procedures mapped to migrated, intentionally redesigned, user-deferred, blocked, or not applicable.
    - Backend build/test pass.
    - Frontend lint/build pass.
    - Live smoke checks pass in the target runtime.
    - `vb6-parity-auditor` has run and every blocking finding is fixed, user-deferred, blocked with a concrete reason, or not applicable.
    - Compatibility, semantic, and remaining-work ledgers are current.
+   - Final product build has explicit user approval.
+   - Final build report and migration closeout are complete.
+   - User has accepted the final handoff packet.
 
 ## User Review
 

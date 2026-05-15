@@ -2,6 +2,8 @@
 
 Keep these ledgers current during migration. They prevent a "working app" from hiding unmigrated forms, silent semantic changes, or user-deferred work.
 
+Update ledgers after every implementation slice, not only during the final audit. Each slice report should summarize which ledger rows changed and which tests or smoke steps prove the change.
+
 ## Compatibility Ledger
 
 Use these columns:
@@ -16,6 +18,8 @@ Allowed statuses:
 - user-deferred
 - blocked
 - not applicable
+
+Each migrated or intentionally redesigned row needs target behavior plus verification, or an explicit accepted deferral.
 
 ## Semantic Ledger
 
@@ -45,3 +49,13 @@ Use this at every checkpoint and before declaring completion.
 |---|---|---|---|---|
 
 Before completion, each row should be gone, user-deferred, blocked with a concrete reason, or marked not applicable.
+
+## Slice Report Linkage
+
+Every row changed during a slice should be referenced from `docs/slice-reports.md`, including:
+
+- source item covered
+- target file or workflow
+- tests run
+- result
+- user decision or deferral when applicable

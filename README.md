@@ -5,16 +5,15 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
 ## What's inside
 
 - **Slash commands**
-  - `/vb6-migrate` — orchestrate a full migration: inventory, architecture interview, plan, execute
+  - `/vb6-migrate` — orchestrate a governed migration with source/target approval, inventory review, option selection, implementation approval, slice evidence, parity audit, final build, and closeout
   - `/vb6-inventory` — just the inventory step (forms, controls, SQL, schema inference)
   - `/vb6-translate-form <path>` — translate a single `.frm` to a React page + needed API endpoints
   - `/vb6-migrate-data <path-to-backup.bak>` — run the SQL Server backup to SQLite data-migration workflow
   - `/vb6-package-desktop [mac|wsl2-windows|both]` — package a migrated ASP.NET Core + React app as a Tauri desktop app
-- **Subagent**: `vb6-migration-architect` — reads an inventory, asks 3-5 design questions, writes a phased plan
+- **Subagent**: `vb6-migration-architect` — reads an inventory/options brief, asks unresolved design/test questions, writes a phased plan
 - **Skills** (auto-loaded by trigger):
   - `vb6-migration-orchestrator` — Codex-visible end-to-end workflow, inventory helper, and seed migration references
-  - `vb6-parity-auditor` — final parity review across source inventory, migrated code, ledgers, tests, and smoke flows
-  - `vb6-parity-auditor` — final parity audit comparing VB6 inventory/source against migrated routes, endpoints, tests, smoke flows, and ledgers
+  - `vb6-parity-auditor` — parity audit comparing VB6 inventory/source against migrated routes, endpoints, tests, smoke flows, slice reports, and ledgers
   - `vb6-language-mapping` — VB6 ↔ C# syntax/semantics
   - `vb6-error-handling` — `On Error Goto` / `Resume Next` / `Err` → `try`/`catch`
   - `vb6-data-types` — `Variant`, `Currency`, 1-based arrays, `Option Base`
@@ -98,9 +97,11 @@ From, or pointing at, any directory containing a VB6 project (`.vbp`, `.frm`, `.
 
 The plugin treats the VB6 checkout as read-only source input. It proposes a separate sibling target repo such as `<source-folder>-csharp` or `<source-folder>-migration`, lets the user edit those defaults, then writes generated docs, backend, frontend, scripts, ledgers, and tests into that target repo.
 
-The plugin inventories the source, asks architecture questions, writes a plan, and executes it phase by phase in the target repo.
+The plugin follows an explicit gate sequence: approve source/target paths, approve inventory, choose migration options, approve governance/test plan, approve implementation, run/report slices, run full tests and parity audit, approve final build, then close out with final documentation.
 
-The migration workflow now creates reviewable governance artifacts before implementation in the target repo: `docs/source-application-brief.md`, `docs/migration-governance-brief.md`, compatibility/semantic/remaining-work ledgers, Mermaid diagrams for old/new systems, and source-to-target mapping tables. The agent must present the decision-critical content in chat or open the docs for the user, then wait for approval before execution proceeds.
+The migration workflow creates reviewable governance artifacts before implementation in the target repo: `docs/source-application-brief.md`, `docs/migration-options.md`, `docs/migration-governance-brief.md`, `docs/test-plan.md`, `docs/decision-log.md`, compatibility/semantic/remaining-work ledgers, Mermaid diagrams for old/new systems, and source-to-target mapping tables. The agent must present the decision-critical content in chat or open the docs for the user, then wait for approval before execution proceeds.
+
+During implementation, every slice updates parity ledgers, test results, and slice reports. After code is written, the final flow runs full tests, runs the parity auditor, asks for final build approval, records build artifacts, updates closeout docs, and asks for final acceptance.
 
 ## Provenance
 
@@ -113,6 +114,7 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Scaffold skills (dotnet-sqlite, vite-react)
 - ✅ Codex-visible orchestration skill with a deterministic VB6 inventory helper
 - ✅ Final parity-audit skill for missed forms, helper workflows, semantic hazards, and weak verification
+- ✅ Governed decision gates, migration options, test evidence, slice reports, final build approval, and closeout docs
 - ✅ Tauri + ASP.NET Core sidecar packaging skill with macOS and WSL2 Windows build paths
 - ⚠️ `mssql-bak-to-sqlite` is documentation-only — pattern is correct but not yet exercised end-to-end
-- ⚠️ No automated tests yet; verify by running `/vb6-migrate` against a clean clone of a VB6 source repo and a separate target repo
+- ⚠️ Plugin self-tests are still light; verify by running `/vb6-migrate` against a clean clone of a VB6 source repo and a separate target repo

@@ -13,11 +13,13 @@ From, or pointing at, any directory containing a VB6 project (`.vbp`, `.frm`, `.
 Claude will:
 1. Treat the VB6 checkout as read-only source input.
 2. Propose a separate target repo such as `<source-folder>-csharp` or `<source-folder>-migration`, and let you edit the defaults.
-3. Inventory the VB6 source into `<target-repo>/docs/vb6-inventory.{json,md}`.
-4. Present the source/governance review packet in chat or open the generated docs.
-5. Ask 3-5 architecture questions via the `vb6-migration-architect` subagent.
-6. Write a phased plan file.
-7. After your approval, scaffold backend + frontend and translate forms one by one in the target repo.
+3. Inventory the VB6 source into `<target-repo>/docs/vb6-inventory.{json,md}` and ask you to approve the source understanding.
+4. Present migration options for stack, data, auth, UI strategy, hosting, packaging, tests, parity tracking, and final build behavior.
+5. Write and present the governance brief, migration options, test plan, ledgers, and decision log.
+6. Ask for implementation approval before scaffolding backend/frontend code.
+7. Translate in slices, updating parity ledgers, test results, and slice reports after each slice.
+8. Run full tests and the parity auditor before asking for final build approval.
+9. Build the final product only after approval, then update closeout docs and ask for final acceptance.
 
 ## Smaller commands
 
@@ -38,7 +40,7 @@ Claude will:
 
 ### Subagent (`agents/`)
 
-- `vb6-migration-architect.md` — turns an inventory into a phased plan via a short interview
+- `vb6-migration-architect.md` — turns inventory/options/test choices into a phased plan via a short interview
 
 ### Skills (`skills/`)
 
@@ -68,7 +70,7 @@ Built alongside a real VB6 → modern-stack migration of a library-management ap
 - ✅ Scaffold skills written (dotnet-sqlite, vite-react)
 - ✅ Desktop packaging skill written (Tauri + ASP.NET Core sidecar, macOS, WSL2 Windows)
 - ⚠️  `mssql-bak-to-sqlite` skill is documentation only — pattern is correct but not yet run end-to-end
-- ⚠️  No automated tests yet; verification is "run /vb6-migrate against the seed library app from a clean directory and check output"
+- ⚠️  Plugin self-tests are still light; verification is "run /vb6-migrate against the seed library app from a clean source repo and separate target repo, then check gate behavior and generated evidence"
 
 ## Next steps
 
