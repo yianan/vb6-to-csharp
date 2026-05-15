@@ -13,6 +13,7 @@ A Claude Code plugin that migrates VB6 codebases to a modern stack: **ASP.NET Co
 - **Subagent**: `vb6-migration-architect` — reads an inventory, asks 3-5 design questions, writes a phased plan
 - **Skills** (auto-loaded by trigger):
   - `vb6-migration-orchestrator` — Codex-visible end-to-end workflow, inventory helper, and seed migration references
+  - `vb6-parity-auditor` — final parity review across source inventory, migrated code, ledgers, tests, and smoke flows
   - `vb6-parity-auditor` — final parity audit comparing VB6 inventory/source against migrated routes, endpoints, tests, smoke flows, and ledgers
   - `vb6-language-mapping` — VB6 ↔ C# syntax/semantics
   - `vb6-error-handling` — `On Error Goto` / `Resume Next` / `Err` → `try`/`catch`
@@ -96,6 +97,8 @@ In any directory containing a VB6 project (`.vbp`, `.frm`, `.bas`):
 ```
 
 The plugin inventories the source, asks architecture questions, writes a plan, and executes it phase by phase.
+
+The migration workflow now creates reviewable governance artifacts before implementation: `docs/source-application-brief.md`, `docs/migration-governance-brief.md`, compatibility/semantic/remaining-work ledgers, Mermaid diagrams for old/new systems, and source-to-target mapping tables. The user must confirm they have read the briefs before execution proceeds.
 
 ## Provenance
 

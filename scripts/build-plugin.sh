@@ -16,6 +16,7 @@ zip -rq "$OUT" . -x \
   ".git/*" "*.DS_Store" \
   "vb6-to-csharp.plugin" \
   "scripts/*" \
+  "*__pycache__*" "*.pyc" \
   "node_modules/*"
 
 echo "✅ Built $OUT ($(du -h "$OUT" | cut -f1))"

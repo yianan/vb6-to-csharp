@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "vb6-to-csharp",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "End-to-end VB6 → C# (ASP.NET Core) + TypeScript (Vite + React) migration toolkit. Inventories a VB6 project, designs a fresh stack, scaffolds backend and frontend, translates forms one by one. Skills cover language/runtime/data gotchas.",
   "author": "Yiannis Antoniou"
 }

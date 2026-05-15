@@ -1,5 +1,5 @@
 ---
-description: Inventory the VB6 project in the current directory; produce docs/vb6-inventory.{json,md}.
+description: Inventory the VB6 project in the current directory; produce docs/vb6-inventory.{json,md} and docs/source-application-brief.md.
 ---
 
 Scan the current working directory for VB6 source files and produce a structured inventory.
@@ -10,8 +10,9 @@ Scan the current working directory for VB6 source files and produce a structured
 - `*.frm` — form files. See the `vb6-frm-parser` skill for the file format.
 - `*.bas` — code modules. Often holds globals like `Public con As New ADODB.Connection`.
 - `*.cls` — class modules.
-- `*.frx` — binary form resources (icons, embedded images). Note them but you won't translate them directly.
-- `*.bak` next to a `database/` directory — likely a SQL Server backup. Note location for the `mssql-bak-to-sqlite` skill if needed later.
+- `*.ctl`, `*.vbg` — user controls and project groups.
+- `*.frx`, `*.res`, images, icons — binary resources. Note them but you won't translate them directly.
+- `*.mdb`, `*.accdb`, `*.bak`, `*.db`, `*.sqlite*` — legacy databases or backup/data files. Note location for the data-migration path if needed later.
 
 ## Per-form record
 
@@ -44,6 +45,18 @@ From the SQL queries across all forms, build a tables-and-columns inventory. Not
 ```
 
 `docs/vb6-inventory.md` — human-readable version of the same content with markdown tables and short prose.
+
+`docs/source-application-brief.md` — reviewable source-application documentation with:
+
+- existing system Mermaid diagrams
+- screen/form inventory
+- code module inventory
+- database/data asset inventory
+- external dependency mapping placeholders
+- initial risk register
+- target mapping placeholders for the migration governance brief
+
+The user must review this source brief and the migration governance brief before implementation begins.
 
 ## Tips
 

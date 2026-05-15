@@ -23,17 +23,29 @@ The architect agent (`vb6-migration-architect`) will own the planning. You execu
 
 ## Workflow
 
-1. **Inventory.** First run `/vb6-inventory` (or call its logic inline): scan `*.frm`, `*.bas`, `*.cls`, `*.vbp`. For each form, record purpose, control list, event handlers, and any inline SQL queries. Infer the database schema from those queries. Save the result to `docs/vb6-inventory.json` and a human-readable `docs/vb6-inventory.md`.
+1. **Inventory.** First run `/vb6-inventory` (or call its logic inline): scan `*.frm`, `*.bas`, `*.cls`, `*.ctl`, `*.vbp`, `*.vbg`, data files, resources, and COM/OCX references. For each form, record purpose, control list, event handlers, and any inline SQL queries. Infer the database schema from those queries. Save the result to `docs/vb6-inventory.json`, `docs/vb6-inventory.md`, and `docs/source-application-brief.md`.
 
-2. **Architecture interview.** Launch the `vb6-migration-architect` subagent with the inventory as input. The subagent uses `AskUserQuestion` to decide:
+2. **Governance documentation.** Before implementation, create `docs/migration-governance-brief.md` using the orchestrator references. It must include:
+   - existing app overview and old-system Mermaid diagrams
+   - proposed new-system Mermaid diagrams
+   - screen/form-to-route mapping
+   - code module/procedure-to-target mapping
+   - database/file/query-to-entity/import mapping
+   - COM/OCX/resource replacement or deferral mapping
+   - semantic hazards and verification plan
+   - review gates, ledgers, audit criteria, and repeatability evidence
+
+3. **User review gate.** Show the user `docs/source-application-brief.md` and `docs/migration-governance-brief.md`, then ask: "Have you read these documents and do you approve proceeding with implementation?" Do not proceed to implementation until they explicitly confirm. Record the approval decision.
+
+4. **Architecture interview.** Launch the `vb6-migration-architect` subagent with the inventory and governance brief as input. The subagent uses `AskUserQuestion` to decide:
    - Frontend framework (React / Vue / Svelte / vanilla TS)
    - Data migration strategy (fresh seed / migrate `.bak` / hybrid)
    - Auth model (single admin / multi-user with roles / no auth)
    - Hosting (local only / deployable / desktop wrapper)
 
-3. **Plan.** The subagent writes a project-specific plan file (mirror the structure used in the seed library-app migration: phases 0–8, target architecture diagram, schema, form-route mapping table, build sequence, verification plan, and parity audit gate). The plan goes wherever the user is invoking `/plan` — typically `~/.claude/plans/<plan-name>.md`. Call `ExitPlanMode` to surface it for approval.
+5. **Plan.** The subagent writes a project-specific plan file (mirror the structure used in the seed library-app migration: phases 0–8, old/new diagrams, target architecture diagram, schema, form-route mapping table, code/data/dependency mapping tables, build sequence, verification plan, and parity audit gate). The plan goes wherever the user is invoking `/plan` — typically `~/.claude/plans/<plan-name>.md`. Call `ExitPlanMode` to surface it for approval.
 
-4. **Execute.** After approval, run phases sequentially:
+6. **Execute.** After approval, run phases sequentially:
    - **Phase 0**: verify SDKs (`dotnet --version` ≥ 10, `node --version` ≥ 20). Install with `brew install dotnet` if needed. Capture macOS/Windows/Linux quirks into the project's `docs/migration-notes.md`.
    - **Phase 1**: scaffold backend per `dotnet-sqlite-scaffold`. Define entities + `DbContext` from the inventoried schema, normalizing denormalized VB6 tables. Initial migration. Seed.
    - **Phase 2**: per-resource endpoints. As you translate inline-SQL queries from `.bas`/`.frm`, load `vb6-ado-patterns` and rewrite to LINQ. Wrap multi-statement business logic (issue/return-style flows) in services with explicit transactions.
@@ -44,9 +56,9 @@ The architect agent (`vb6-migration-architect`) will own the planning. You execu
    - **Phase 7**: load `vb6-parity-auditor`; compare VB6 inventory/source against migrated routes, endpoints, tests, smoke flows, ledgers, and any packaging verification. Fix blocking findings or record explicit accepted deferrals.
    - **Phase 8**: feed any new gotchas back into the relevant skill files.
 
-5. **Completion gate.** Do not call the migration complete until the parity audit verdict is `Complete`, `Complete with accepted deferrals`, or `Blocked` with concrete external blockers.
+7. **Completion gate.** Do not call the migration complete until the parity audit verdict is `Complete`, `Complete with accepted deferrals`, or `Blocked` with concrete external blockers.
 
-6. **Skill upkeep.** Throughout execution, when you hit a VB6 quirk that's not yet documented (a strange `Option Base 1` index, an `On Error Resume Next` pattern, a default-property gotcha), add a `[skill: <skill-name>]`-tagged note to `docs/migration-notes.md` and update the skill's `SKILL.md` if the pattern is general. **Never** invent a skill from training data without a real example from the codebase you're migrating.
+8. **Skill upkeep.** Throughout execution, when you hit a VB6 quirk that's not yet documented (a strange `Option Base 1` index, an `On Error Resume Next` pattern, a default-property gotcha), add a `[skill: <skill-name>]`-tagged note to `docs/migration-notes.md` and update the skill's `SKILL.md` if the pattern is general. **Never** invent a skill from training data without a real example from the codebase you're migrating.
 
 ## Arguments
 

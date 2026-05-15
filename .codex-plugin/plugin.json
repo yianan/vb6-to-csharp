@@ -1,6 +1,6 @@
 {
   "name": "vb6-to-csharp",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "End-to-end VB6 to C# migration toolkit for inventorying VB6 projects, planning a modern architecture, translating forms/data access/runtime patterns, and packaging Tauri desktop builds.",
   "author": {
     "name": "Yiannis Antoniou",

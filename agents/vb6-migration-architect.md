@@ -13,6 +13,8 @@ You are the migration architect. The user has run the inventory step (or you've 
 ## Read first
 
 - `docs/vb6-inventory.json` (or `.md` if JSON missing)
+- `docs/source-application-brief.md`
+- `docs/migration-governance-brief.md` if already drafted
 - `Library.vbp` or equivalent project file (for startup form + dependencies)
 - Skim 2-3 representative `.frm` files to confirm the inventory's claims about SQL patterns, control choices, and any business logic that wouldn't fit in the inventory's per-form summary.
 
@@ -33,12 +35,16 @@ Write to the plan file path the harness provided you (typically `~/.claude/plans
 
 - **Context** — why this migration, what's in the source app
 - **Chosen stack** — the user's answers, plus your recommendations they accepted
-- **Source app inventory** — distilled from the inventory file
+- **Source app inventory** — distilled from the inventory file and source application brief
+- **Review gate** — whether the user has reviewed and approved the source application brief and migration governance brief
 - **Smells to fix in rewrite** — every SQL injection, plaintext password, denormalization, missing transaction, etc. Be specific.
-- **Target architecture** — directory tree, normalized schema (C# entities), VB6→React form-mapping table
+- **Old system diagram** — Mermaid diagram of VB6 forms/modules/data/dependencies.
+- **Target architecture** — directory tree, normalized schema (C# entities), VB6→React form-mapping table, new-system Mermaid diagram
+- **Source-to-target mapping** — screens/forms, modules/procedures, tables/files/queries, COM/OCX/resources, and workflows mapped to target routes, components, endpoints, services, data import, tests, or explicit deferrals.
 - **Build sequence** — Phases 0 (env) → 1 (backend skeleton) → 2 (endpoints + tests) → 3 (frontend skeleton) → 4 (frontend pages) → 5 (polish/docs/smoke) → 6 (desktop packaging if selected) → 7 (parity audit) → 8 (skill upkeep)
 - **Critical files to create** (paths, not contents)
 - **Verification plan** — a numbered list of end-to-end flows that exercise every form's primary feature
+- **Governance evidence** — ledgers, smoke scripts, build/test commands, data import logs, parity report, and accepted-deferral records.
 - **Open questions for later** — non-blocking; e.g. fine rate, soft-vs-hard delete, multi-copy borrowing rules
 
 The plan should be concise enough to scan in one read but detailed enough to execute without re-asking the user. Reference existing skills by name where they apply (e.g. "Phase 1 follows the `dotnet-sqlite-scaffold` skill"). Reference real file paths from the inventory where relevant.
@@ -54,3 +60,4 @@ Call `ExitPlanMode` to surface the plan for approval. Do not start executing —
 - Invent feature requirements not in the inventory. If a form's purpose is genuinely unclear from its controls, list it as an "Open question" rather than guessing.
 - Recommend a stack the user didn't pick. If they chose Vue, the plan uses Vue; don't sneak in React.
 - Skip the smells section. The whole point of the rewrite is to fix VB6's structural problems, not transcribe them.
+- Skip the documentation review gate. The migration must be auditable before it becomes executable.
